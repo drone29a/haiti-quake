@@ -10,14 +10,24 @@ createRetweetFrame <- function(quake.data, retweeted.ids) {
  return(retweets)
 }
 
-plotMostRetweeted <- function(retweets) {
-  ggplot(retweets, aes(x=original.tweet.id)) +
-    geom_histogram()
-}
+buildEdgeList <- function(retweets) {
+  edges <- data.frame(from=NA, to=NA)
+  all.edges <- vector()
+  for (retweeter.id in retweets$retweeter.id) {
+    tweet.ids <- sort(retweets$original.tweet.id[retweets$retweeter.id == retweeter.id])
+    if (length(tweet.ids) > 1) {
+      comb.ids <- combn(tweet.ids, 2)
+      comb.ids <- data.frame(from = comb.ids[1,], to = comb.ids[2,])
+      edge.names <- lapply(1:length(comb.ids$from), function(x) { paste(comb.ids$from[x], comb.ids$to[x], sep=",")})
 
-meldCounts <- function(retweets, groups) {
-  for (group.id in groups$id) {
-    retweets$group.id[retweets$
+      all.edges <- append(all.edges, unlist(edge.names))
+    
+      ## for (col.idx in 1:length(comb.ids[1,])) {
+      ##   edge.name <- paste(comb.ids[,col.idx], collapse = ",")
+      ## }
+    }
+  }
+  return(all.edges)
 }
 
 # author.screennames <- lapply(retweets.group$original.tweet.id, function(x) { retweets$original.author.screenname[retweets$original.tweet.id == x][1] })
@@ -41,3 +51,4 @@ meldCounts <- function(retweets, groups) {
 
 # In progress method for stacked bar chart of top 5 tweets over time
 # ggplot(retweets, aes(x = time.interval, fill = original.tweet.id)) + geom_bar(aes(weight = 
+#
