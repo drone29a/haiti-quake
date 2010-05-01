@@ -13,8 +13,9 @@ createRetweetFrame <- function(quake.data, retweeted.ids) {
 buildEdgeList <- function(retweets) {
   edges <- data.frame(from=NA, to=NA)
   all.edges.vec <- vector()
-  for (retweeter.id in sort(unique(retweets$retweeter.id))) {
-    tweet.ids <- sort(retweets$original.tweet.id[retweets$retweeter.id == retweeter.id])
+  for (curr.retweeter.id in sort(unique(retweets$retweeter.id))) {
+#    tweet.ids <- sort(retweets$original.tweet.id[retweets$retweeter.id == retweeter.id])
+    tweet.ids <- sort(subset(retweets, retweeter.id == curr.retweeter.id, select = original.tweet.id)$original.tweet.id)
     tweet.ids <- array(tweet.ids)
     if (length(tweet.ids) > 1) {
       comb.ids <- combn(tweet.ids, 2)
@@ -34,7 +35,17 @@ buildEdgeList <- function(retweets) {
   # for magnitude
   all.edges <- data.frame(from = all.edges.mat[col(all.edges.mat) == 1],
                           to = all.edges.mat[col(all.edges.mat) == 2])
-  return(all.edges)
+
+  agg.edges <- aggregate(all.edges, by = list(all.edges$from, all.edges$to),
+                         FUN = length, simplify = TRUE)
+
+  agg.edges <- data.frame(from = agg.edges$Group.1,
+                          to = agg.edges$Group.2,
+                          weight = agg.edges$from)
+
+  agg.edges <- agg.edges[with(agg.edges, order(-weight, from)),]
+  
+  return(agg.edges)
 }
 
 writeToGdfFile <- function(file.path, vertices, edges) {
@@ -44,8 +55,11 @@ writeToGdfFile <- function(file.path, vertices, edges) {
 #  write.table(vertices, sep = ",", col.names = FALSE, row.names = FALSE,
 #              quote = TRUE, file = gdf.file)
   for (i in 1:length(vertices[,1])) {
-    for (j in 1:length(names(vertices)) - 1) {
-      if (j == 1 || j >= length(names(vertices)) - 2) {
+    for (j in 1:length(names(vertices))) {
+      if (j == 1) {
+        cat(as.character(vertices[i,j]), file = gdf.file)
+      }
+      else if (j >= length(names(vertices)) - 2) {
         cat("'", as.character(vertices[i,j]), "'", sep = "", file = gdf.file)
       } else {
         cat(as.numeric(vertices[i,j]), file = gdf.file)
@@ -59,8 +73,23 @@ writeToGdfFile <- function(file.path, vertices, edges) {
   }
 
   cat("edgedef> ", paste(names(edges), collapse = ","), "\n", sep = "", file = gdf.file)
-  write.table(edges, sep = ",", col.names = FALSE, row.names = FALSE,
-              quote = TRUE, file = gdf.file)
+  for (i in 1:length(edges[,1])) {
+    for (j in 1:length(names(edges))) {
+      if (j == 1 || j == 2) {
+        cat(as.character(edges[i,j]), file = gdf.file)
+      } else {
+        cat(as.numeric(edges[i,j]), file = gdf.file)
+      }
+
+      if (j < length(names(edges))) {
+        cat(",", file = gdf.file)
+      }
+    }
+    cat("\n", file = gdf.file)
+  }
+
+#  write.table(edges, sep = ",", col.names = FALSE, row.names = FALSE,
+#              quote = TRUE, file = gdf.file)
   
   close(gdf.file)
 }
@@ -92,18 +121,24 @@ writeToGdfFile <- function(file.path, vertices, edges) {
 # g <- graph.edgelist(as.matrix(edge.list), directed=FALSE)
 
 # duplicates due to non-unique agg.retweets.ids and agg.retweets.ids.sorted
-
+# OR, maybe factor issues?  Think it's resolved now.
 
 # What's up with 7 missing in new retweets.edges compared to edge.list?
 # And why does length(unique(edge.list)$from) report much fewer?
 
-for (i in l) {
-  text <- retweets.texts$retweeted_status.text[i]
-  tweet.id <- retweets.texts$retweeted_status.id[i]
-  retweets.verts$text[retweets.verts$name == tweet.id] <- text
-}
+# Cleanup $text with:
+# gsub("[\n\t]", " ", retweets.verts$text)
+# had to run twice, why?
 
-for (i in 1:length(from.to)) {
-  from[i] <- from.to[[i]][1]
-  to[i] <- from.to[[i]][2]
-}
+# get $text for vertices
+## for (i in l) {
+##   text <- retweets.texts$retweeted_status.text[i]
+##   tweet.id <- retweets.texts$retweeted_status.id[i]
+##   retweets.verts$text[retweets.verts$name == tweet.id] <- text
+## }
+
+# dividing up combined edge names, no longer needed with aggregate fun
+## for (i in 1:length(from.to)) {
+##   from[i] <- from.to[[i]][1]
+##   to[i] <- from.to[[i]][2]
+## }
