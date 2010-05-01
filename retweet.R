@@ -12,22 +12,57 @@ createRetweetFrame <- function(quake.data, retweeted.ids) {
 
 buildEdgeList <- function(retweets) {
   edges <- data.frame(from=NA, to=NA)
-  all.edges <- vector()
-  for (retweeter.id in retweets$retweeter.id) {
+  all.edges.vec <- vector()
+  for (retweeter.id in sort(unique(retweets$retweeter.id))) {
     tweet.ids <- sort(retweets$original.tweet.id[retweets$retweeter.id == retweeter.id])
+    tweet.ids <- array(tweet.ids)
     if (length(tweet.ids) > 1) {
       comb.ids <- combn(tweet.ids, 2)
       comb.ids <- data.frame(from = comb.ids[1,], to = comb.ids[2,])
       edge.names <- lapply(1:length(comb.ids$from), function(x) { paste(comb.ids$from[x], comb.ids$to[x], sep=",")})
 
-      all.edges <- append(all.edges, unlist(edge.names))
+      all.edges.vec <- append(all.edges.vec, unlist(edge.names))
     
       ## for (col.idx in 1:length(comb.ids[1,])) {
       ##   edge.name <- paste(comb.ids[,col.idx], collapse = ",")
       ## }
     }
   }
+  all.edges.mat <- matrix(unlist(strsplit(all.edges.vec, ",")), ncol=2, byrow=TRUE)
+
+  # There will be some duplicates, that means multiple common retweeters and should be summed
+  # for magnitude
+  all.edges <- data.frame(from = all.edges.mat[col(all.edges.mat) == 1],
+                          to = all.edges.mat[col(all.edges.mat) == 2])
   return(all.edges)
+}
+
+writeToGdfFile <- function(file.path, vertices, edges) {
+  gdf.file <- file(file.path, "w")
+
+  cat("nodedef> ", paste(names(vertices), collapse = ","), "\n", sep = "", file = gdf.file)
+#  write.table(vertices, sep = ",", col.names = FALSE, row.names = FALSE,
+#              quote = TRUE, file = gdf.file)
+  for (i in 1:length(vertices[,1])) {
+    for (j in 1:length(names(vertices)) - 1) {
+      if (j == 1 || j >= length(names(vertices)) - 2) {
+        cat("'", as.character(vertices[i,j]), "'", sep = "", file = gdf.file)
+      } else {
+        cat(as.numeric(vertices[i,j]), file = gdf.file)
+      }
+
+      if (j < length(names(vertices))) {
+        cat(",", file = gdf.file)
+      }
+    }
+    cat("\n", file = gdf.file)
+  }
+
+  cat("edgedef> ", paste(names(edges), collapse = ","), "\n", sep = "", file = gdf.file)
+  write.table(edges, sep = ",", col.names = FALSE, row.names = FALSE,
+              quote = TRUE, file = gdf.file)
+  
+  close(gdf.file)
 }
 
 # author.screennames <- lapply(retweets.group$original.tweet.id, function(x) { retweets$original.author.screenname[retweets$original.tweet.id == x][1] })
@@ -52,3 +87,23 @@ buildEdgeList <- function(retweets) {
 # In progress method for stacked bar chart of top 5 tweets over time
 # ggplot(retweets, aes(x = time.interval, fill = original.tweet.id)) + geom_bar(aes(weight = 
 #
+
+# Build graph, convert data frame of edges to matrix to get edgelist
+# g <- graph.edgelist(as.matrix(edge.list), directed=FALSE)
+
+# duplicates due to non-unique agg.retweets.ids and agg.retweets.ids.sorted
+
+
+# What's up with 7 missing in new retweets.edges compared to edge.list?
+# And why does length(unique(edge.list)$from) report much fewer?
+
+for (i in l) {
+  text <- retweets.texts$retweeted_status.text[i]
+  tweet.id <- retweets.texts$retweeted_status.id[i]
+  retweets.verts$text[retweets.verts$name == tweet.id] <- text
+}
+
+for (i in 1:length(from.to)) {
+  from[i] <- from.to[[i]][1]
+  to[i] <- from.to[[i]][2]
+}
