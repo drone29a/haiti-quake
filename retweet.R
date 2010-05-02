@@ -142,3 +142,26 @@ writeToGdfFile <- function(file.path, vertices, edges) {
 ##   from[i] <- from.to[[i]][1]
 ##   to[i] <- from.to[[i]][2]
 ## }
+
+
+# Removed two rows from quake.data
+# texts:
+# Raw Footage Of Earthquake In Haiti 1/12/2010 http://hotncatty.com/2010/01/12/raw-footage-of-earthquake-in-haiti-1122010/
+#
+#RT @coldplay: "The people of Haiti will be desperate for help" - message from Chris about the Haiti earthquake http://bit.ly/8bCVea
+
+# rows: 11005, 63174
+
+
+# new graphs:
+
+# all retweets:
+# ggplot(retweets, aes(x=time.interval)) + geom_histogram() + opts(axis.text.x=theme_text(angle=-60, hjust=0, size=8))
+
+# all tweets compared to retweets:
+# ggplot(quake.data, aes(interval, fill=tweet.type)) + geom_freqpoly(aes(group = tweet.type, colour = tweet.type)) + opts(axis.text.x=theme_text(angle=-60, hjust=0, size = 6))
+
+# top 50 retweeted tweets:
+# ggplot(retweets.group[1:50,], aes(x=group.id, y=retweet.counts, label=original.author.name, fill=retweet.counts)) + geom_bar(stat="identity") + geom_text(angle=70, hjust=-0.1, size = 3) + ylim(0, 900) + labs(x="Popular Tweets", y="# Retweets") + opts(axis.text.x = theme_blank(), axis.ticks = theme_blank())
+
+# top 50 retweeted tweets, the counts and the number of followers
