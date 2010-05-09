@@ -161,24 +161,29 @@ writeToGdfFile <- function(file.path, vertices, edges) {
 # ggplot(retweets, aes(x=time.interval)) + geom_histogram() + opts(axis.text.x=theme_text(angle=-60, hjust=0, size=8), title.text = "All Collected Tweets") + labs(x = "Time (in 15-minute Intervals)", y = "Number of Tweets")
 
 # non-retweets compared to retweets:
-# ggplot(quake.data, aes(interval)) + geom_freqpoly(aes(group = tweet.type, colour = tweet.type)) + opts(axis.text.x=theme_text(angle=-60, hjust=0, size = 7), title.text = "Comparison of Retweets and Basic Tweets", legend.justification = "left", legend.position = "none", legend.background = theme_rect(col = 0)) + labs(x = "Time (in 15-Minute Intervals)", y = "Number of Tweets") + scale_colour_hue(name = "") + geom_text(data = quake.data[quake.data$interval == "04:15",], aes(label = tweet.type, y = ..count.., colour = tweet.type), hjust = -0.7, vjust = 1.5, stat = "bin")
+# ggplot(quake.data, aes(interval)) + geom_freqpoly(aes(group = tweet.type, colour = tweet.type)) + opts(axis.text.x=theme_text(angle=-60, hjust=0, size = 7), title.text = "Comparison of Retweets and Plain Tweets", legend.justification = "left", legend.position = "none", legend.background = theme_rect(col = 0)) + labs(x = "Time (in 15-Minute Intervals)", y = "Number of Tweets") + scale_colour_hue(name = "") + geom_text(data = quake.data[quake.data$interval == "04:15",], aes(label = tweet.type, y = ..count.., colour = tweet.type), hjust = -0.7, vjust = 1.5, stat = "bin")
 
 # alternative with geom_area:
 # ggplot(quake.data, aes(interval)) + geom_area(aes(y = ..count.., fill = tweet.type, group = tweet.type), stat = "bin") + opts(axis.text.x=theme_text(angle=-60, hjust=0, size = 6)) + 
 
 # top 50 retweeted tweets:
-# ggplot(retweets.group[1:50,], aes(x=group.id, y=retweet.counts, label=original.author.name, fill=retweet.counts)) + geom_bar(stat="identity") + geom_text(angle=70, hjust=-0.1, size = 3) + ylim(0, 900) + labs(x="Tweet", y="Number of Retweets") + opts(axis.text.x = theme_blank(), axis.ticks = theme_blank(), title.text = "Top 50 Most Retweeted Posts", legend.position = "none")
+# ggplot(retweets.group[1:50,], aes(x=group.id, y=retweet.counts, label=original.author.name, fill=retweet.counts)) + geom_bar(stat="identity") + geom_text(angle=70, hjust=-0.1, size = 3) + ylim(0, 900) + labs(x="Tweet", y="Number of Retweets") + opts(axis.text.x = theme_blank(), axis.ticks = theme_blank(), title.text = "Top 50 Most-Retweeted Posts", legend.position = "none")
 
 # top 50 retweeted tweets, the counts and the number of followers
-
+# nah, follower count doesn't really say much with a small slice of time
 
 # top 10 retweeted tweets in facet grid, add follower horizontal line for each?  could fill with day/night colors to show time?
-# ggplot(retweets.top.10, aes(x = time.interval)) + geom_bar() + facet_wrap(~ category3, ncol = 3) + labs(x="Time (in 15-Minute Intervals)", y="Number of Retweets") + opts(title.text = "Top 10 Retweeted Posts") + opts(axis.text.x=theme_text(angle=-60, hjust=0, size=4))
+# ggplot(retweets.top.10, aes(x = time.interval)) + geom_bar() + facet_wrap(~ category3, ncol = 3) + labs(x="Time (in 15-Minute Intervals)", y="Number of Retweets") + opts(title.text = "Top 10 Most-Retweeted Posts") + opts(axis.text.x=theme_text(angle=-60, hjust=0, size=4))
 # OR,
-# ggplot(retweets.top.10, aes(x = time.interval)) + geom_bar() + facet_wrap(~ category3, ncol = 3) + labs(x="Time (in 15-Minute Intervals)", y="Number of Retweets") + opts(title.text = "Top 10 Retweeted Posts") + opts(axis.text.x = theme_blank(), axis.ticks = theme_blank())
+# ggplot(retweets.top.10, aes(x = time.interval)) + geom_bar() + facet_wrap(~ category3, ncol = 3) + labs(x="Time (in 15-Minute Intervals)", y="Number of Retweets") + opts(title.text = "Top 10 Most-Retweeted Posts") + opts(axis.text.x = theme_blank(), axis.ticks = theme_blank())
+
+# count of tweets per user, ordered by frequency count
+# ggplot(all.tweets.count, aes(x = id, y = tweet.count)) + geom_freqpoly(stat = "identity") + opts(title.text = "Tweet Frequency of Users") + labs(x = "Users", y = "Number of Tweets")
+
+# top 50 retweeted tweets graphed on timeline of creation date, maybe include total time range?
 
 # last stuff I was doing:
 # retweets.top.10$category4 <- factor(retweets.top.10$category3, labels = c(expression(iamdiddy), expression(Wyclef~~Jean~~1), expression(ashton~~kutcher), expression(Ben~~Stiller), expression(Wyclef~~Jean~~2), expression(Wyclef~~Jean~~3), expression(Oxfam~~America), expression(Perez~~Hilton), expression(Wyclef~~Jean~~4), expression(Wyclef~~Jean~~5)))
 # ggplot(retweets.top.10, aes(x = time.interval)) + geom_bar() + facet_grid(~ category3, labeller = "label_parsed") + labs(x="Time (in 15-Minute Intervals)", y="Number of Retweets") + opts(title.text = "Top 10 Retweeted Posts") + opts(axis.text.x = theme_blank(), axis.ticks = theme_blank())
-
 # Research the story of how Oxfam America peeks late.
+# Coldplay!
