@@ -48,7 +48,9 @@ Our analysis focuses on the use of Twitter in the wake of the 2010 earthquake in
 
 \section{Retweets}
 
-We consider both the information diffusion and network relationships that may be inferred from analysis of the retweets in the dataset.
+Retweets account for 25\% of the collected messages from our corpus.  While there are 4,826 individual messages that were retweeted, only 4\% of those were retweeted 10 or more times.  Retweets provide evidence of user interaction and reaction are useful for determining the flow of information and user relationships.  We consider both the information diffusion and network relationships that may be inferred from analysis of the retweets in the dataset.
+
+\subsection{Diffusion}
 
 As shown in Figure~\ref{fig:rt_top_50}, \textit{iamdiddy}, the screen name of music artist Sean ``Diddy'' Combs was the author of the single most retweeted post.  There are 36 unique authors whose posts made it into the top 50; Wyclef Jean, CNN Breaking News, and LIFE.com had several posts each.  Wyclef Jean, a musician born in Haiti and nephew of the Haitian ambassador to the United States, had 11 posts in the top 50 with 5 of them in the top 10.  The Y\'{e}le Haiti Foundation, which Wyclef founded in 2005 to provide educational scholarships to Haitians, also had a top-50 retweet.  The top-50 list is unsurprisingly dominated by celebrities and popular media outlets.
 
@@ -68,33 +70,35 @@ As shown in Figure~\ref{fig:rt_top_50}, \textit{iamdiddy}, the screen name of mu
 
 \begin{center}
   \begin{table}[!ht]
-  \begin{tabular}{| l | p{9.5cm} |}
+    \tiny{
+  \begin{tabular}{| l | p{8.0cm} | c | c |}
     \hline
-    \textit{Name} & \textit{Message} \\
+    \textit{Name} & \textit{Message} & \textit{Time} & \textit{\# Retweets} \\
     \hline
-    iamdiddy & ``STATE OF EMERGENCY!!! RT PLEASE!!! Earthquake relief for Haiti please text YELE to 501501 to donate \$5 or go to www.yele.org RT PLS!!!'' \\
+    iamdiddy & ``STATE OF EMERGENCY!!! RT PLEASE!!! Earthquake relief for Haiti please text YELE to 501501 to donate \$5 or go to www.yele.org RT PLS!!!'' & 06:29:20 & 687 \\
     \hline
-    Wyclef Jean & ``Haiti is in need of immediate AID please text Yele to 510 510 and donate \$5 toward earthquake relief.'' \\
+    Wyclef Jean & ``Haiti is in need of immediate AID please text Yele to 510 510 and donate \$5 toward earthquake relief.'' & 02:53:08 & 511\\
     \hline
-    ashton kutcher & ``If you want to DONATE to HAITI EARTHQUAKE RELIEF: http://tinyurl.com/ya6kpzm'' \\
+    ashton kutcher & ``If you want to DONATE to HAITI EARTHQUAKE RELIEF: http://tinyurl.com/ya6kpzm'' & 05:36:56 & 451 \\
     \hline
-    Ben Stiller & ``If you want to DONATE to HAITI EARTHQUAKE RELIEF: http://tinyurl.com/ya6kpzm'' \\
+    Ben Stiller & ``If you want to DONATE to HAITI EARTHQUAKE RELIEF: http://tinyurl.com/ya6kpzm'' & 05:22:26 & 321 \\
     \hline
-    Wyclef Jean & ``Haiti needs your help text YELE to 501 501 and 5 dollars will go toward earthquake relief.'' \\
+    Wyclef Jean & ``Haiti needs your help text YELE to 501 501 and 5 dollars will go toward earthquake relief.'' & 15:51:38 & 297\\
     \hline
-    Wyclef Jean & ``Warriors Dontate to Earthquake relief in Haiti text Yele to  501 501 and visit www.yele.org'' \\
+    Wyclef Jean & ``Warriors Dontate to Earthquake relief in Haiti text Yele to  501 501 and visit www.yele.org'' & 06:35:11 & 261 \\
     \hline
-    Oxfam America & ``Oxfam is already on the ground in \#Haiti after 7.0 magnitude earthquake hits. You can help now - please donate. http://bit.ly/8mrTkR'' \\
+    Oxfam America & ``Oxfam is already on the ground in \#Haiti after 7.0 magnitude earthquake hits. You can help now - please donate. http://bit.ly/8mrTkR'' & 01:57:01 & 196 \\
     \hline
-    Perez Hilton & ``Another way you can help Haiti after their 7.0 earthquake: Donate \$5 by texting YELE to 501501 and by visiting www.yele.org'' \\
+    Perez Hilton & ``Another way you can help Haiti after their 7.0 earthquake: Donate \$5 by texting YELE to 501501 and by visiting www.yele.org'' & 13:34:10 & 174 \\
     \hline
-    Wyclef Jean & ``Help Haiti Earthquake Relief Donate \$5 by texting YELE to 501 501 right now please RT'' \\
+    Wyclef Jean & ``Help Haiti Earthquake Relief Donate \$5 by texting YELE to 501 501 right now please RT'' & 01:33:23 & 173 \\
     \hline
-    Wyclef Jean & ``Help Haiti Earthquake Relief Donate \$5 by texting YELE to 501 501 right now'' \\
+    Wyclef Jean & ``Help Haiti Earthquake Relief Donate \$5 by texting YELE to 501 501 right now'' & 01:29:14 & 141 \\
     \hline
   \end{tabular}
+    }
   \label{ref:top_retweets_table}
-  \caption{The author's name and message for the top 10 most-retweeted messages, sorted by number of retweets.}
+  \caption{The message's author, text, and time posted for the top 10 most-retweeted messages, sorted by number of retweets.  All times are in UTC and occurred on January 13.}
   \end{table}
 \end{center}
 
@@ -108,6 +112,8 @@ As shown in Figure \ref{fig:rt_compare_over_time}, the fluctuation of retweet fr
 \end{figure}
 
 The most-retweeted message, by iamdiddy, peaks immediately after being published with over 250 users retweeting it in 15 minutes.  While many of the messages reach their apex shortly after posting, the popular Oxfam America message differs and doesn't peak until nearly 9 hours after it appeared.  The message was posted at 02:00 (9PM, EST) but mostly ignored until 10:50 (5:50AM, EST) when the band Coldplay resurrected it.
+
+\subsection{Network}
 
 Along with the dissemination of retweets, we considered a network of tweets related by which followers retweeted them.  This network, shown in Figure \ref{fig:rt_net_core}, uses shared audience as a relationship between retweeted messages.  The network consists of all retweeted messages as nodes and the existence of a common retweeter of any two messages as an edge.  For example, if a user retweets both iamdiddy's message and ashton kutcher's message, then those two messages are connected.  An edge weight is established By finding the total number of connections between two messages.  The constructed retweet network has a diameter of 10 and average clustering coefficient of 0.2715.
 
@@ -131,7 +137,7 @@ Viewing only the top 50 most-retweeted messages (Figure \ref{fig:rt_net_top_50})
 \centering
 \label{fig:rt_net_core_clusters}
 \includegraphics[width=90mm]{../figures/rt_net_core_clusters}
-\caption{This is the network core, but with nodes filtered based on clustering coefficients.  By removing nodes with higher clustering coefficients we reveal the embedded tweet communities.}
+\caption{This is the network core, but with nodes filtered based on clustering coefficients.  By removing nodes with higher clustering coefficients we reveal the embedded tweet cliques.}
 \end{figure}
 
 \begin{figure}[h]
@@ -174,6 +180,8 @@ For example, \textit{\#earthquake} was mentioned 3,299 times by 2,329 different 
 \label{fig:hashtag_counts}
 \end{figure}
 \section{Conclusion}
+
+Though our corpus only provided us with data covering a 13-hour time span, it was enough to offer a glimpse at how Twitter users respond to breaking news and emergencies.  Some findings are expected given certain assumptions.  For example, if we assume that the majority of active Twitter users are in the United States, the drop in posting frequency which corresponds to nighttime in the Americas is expected.  The formation of meaningful cliques in the retweet network is the most unexpected result.  Cliques of messages, such as those posted by individuals in the travel industry or the images captured by the photographer, group related material
 
 \bibliographystyle{splncs}
 \bibliography{bibfile}
