@@ -6,8 +6,12 @@
 \usepackage{subfig}
 \usepackage{amsmath}
 \usepackage[pdfborder={0 0 0}]{hyperref}
-%\usepackage{fontspec}
-%\setmainfont[Mapping=tex-text]{Adobe Garamond Pro}
+\usepackage{fontspec}
+\setmainfont[Mapping=tex-text]{Adobe Garamond Pro}
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.75}
 
 \begin{document}
 \title{Crisis Response in Social Networks}
@@ -29,39 +33,46 @@ When a user wishes to share a post made by a friend, they may retweet it.  A ret
 
 Twitter has previously been used to report and organize a response to emergency situations, such as the crash landing of a plane in the Hudson Bay in January 2009 \cite{Deards2009} and the Iranian 2009 election protest \cite{Grossman2009}.  The research presented in this paper was inspired by those responses, we were interested to better understand how Twitter was used during the aftermath of the Haiti earthquake.
 
-\subsection{Data Summary}
-Our analysis focuses on the use of Twitter in the wake of the 2010 earthquake in Haiti. The earthquake struck at 4:53PM local time on 12 January, centered 25km west of Port-au-Prince. We obtained all the tweets pertaining to ``Haiti'' and ``Earthquake'' during the interval, in local time, from 10:21PM, January 12th to 11:54AM, January 13th.  All times in the paper are in UTC unless otherwise noted.  Local time in Haiti is UTC-5, the same offset as EST in the United States.
-
-Our corpus contains 63,196 tweets from 44,430 unique users, with 15,685 retweets and 3,202 replies. The most common hashtag was \textit{\#haiti} with 8,729 occurrences, followed by \textit{\#earthquake} with 3,299, and \textit{\#helphaiti} with 410 occurrences. The dominance of the top two hashtags, shown in Figure~\ref{fig:hashtag_counts}, may be the result of sample bias present in the way this corpus was extracted from the "firehose". For example, if all tweets containing the words "haiti" and "quake" were included it would capture any with those hashtags as well. However, there are 2072 tweets containing neither "haiti" nor "quake" so it's unclear exactly what criteria were used when collecting the corpus.
-
-As visible in Figure \ref{fig:all_tweets_over_time}, Twitter activity drops over night and then surpasses all previous activity frequency in the morning.  There is a noticeable drop in tweet frequency at the end of Figure \ref{fig:all_tweets_over_time}, please note that the last two intervals may be incomplete due to how the data was collected from the Twitter streaming API.
-
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=120mm]{../figures/all_tweets_over_time}
 \caption{All tweets over time.}
 \label{fig:all_tweets_over_time}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=120mm]{../figures/all_tweets_by_users}
-\caption{All tweets over time..}
+\caption{Tweet frequency for all users, rank-ordered by number of tweets.}
 \label{fig:all_tweets_by_users}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{Data Summary}
+Our analysis focuses on the use of Twitter in the wake of the 2010 earthquake in Haiti. The earthquake struck at 4:53PM local time on 12 January, centered 25km west of Port-au-Prince. We obtained all the tweets pertaining to ``Haiti'' and ``Earthquake'' during the interval, in local time, from 10:21PM, January 12th to 11:54AM, January 13th.  All times in the paper are in UTC unless otherwise noted.  Local time in Haiti is UTC-5, the same offset as EST in the United States.
+
+Our corpus contains 63,196 tweets from 44,430 unique users, with 15,685 retweets and 3,202 replies. The most common hashtag was \textit{\#haiti} with 8,729 occurrences, followed by \textit{\#earthquake} with 3,299, and \textit{\#helphaiti} with 410 occurrences. The dominance of the top two hashtags, shown in Figure~\ref{fig:hashtag_counts}, may be the result of sample bias present in the way this corpus was extracted from the "firehose". For example, if all tweets containing the words "haiti" and "quake" were included it would capture any with those hashtags as well. However, there are 2072 tweets containing neither "haiti" nor "quake" so it's unclear exactly what criteria were used when collecting the corpus.
+
+\begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{../figures/hashtag_counts.pdf}
 \caption{Top 50 most common hashtags in our corpus.}
 \label{fig:hashtag_counts}
 \end{figure}
 
-\section{Retweets}
+As visible in Figure \ref{fig:all_tweets_over_time}, Twitter activity drops over night and then surpasses all previous activity frequency in the morning.  There is a noticeable drop in tweet frequency at the end of Figure \ref{fig:all_tweets_over_time}, please note that the last two intervals may be incomplete due to how the data was collected from the Twitter streaming API.
+
+\section{Retweet Analysis}
 
 Retweets account for 25\% of the collected messages from our corpus.  While there are 4,826 individual messages that were retweeted, only 4\% of those were retweeted 10 or more times.  Retweets provide evidence of user interaction and reaction are useful for determining the flow of information and user relationships.  We consider both the information diffusion and network relationships that may be inferred from analysis of the retweets in the dataset.
 
-\subsection{Diffusion}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=120mm]{../figures/rt_compare_over_time}
+\caption{Frequency of retweets compared to plain tweets over time.}
+\label{fig:rt_compare_over_time}
+\end{figure}
+
+\subsection{Statistics}
 
 As shown in Figure~\ref{fig:rt_top_50}, \textit{iamdiddy}, the screen name of music artist Sean ``Diddy'' Combs was the author of the single most retweeted post.  There are 36 unique authors whose posts made it into the top 50; Wyclef Jean, CNN Breaking News, and LIFE.com had several posts each.  Wyclef Jean, a musician born in Haiti and nephew of the Haitian ambassador to the United States, had 11 posts in the top 50 with 5 of them in the top 10.  The Y\'{e}le Haiti Foundation, which Wyclef founded in 2005 to provide educational scholarships to Haitians, also had a top-50 retweet.  The top-50 list is unsurprisingly dominated by celebrities and popular media outlets.
 
@@ -115,52 +126,33 @@ As shown in Figure~\ref{fig:rt_top_50}, \textit{iamdiddy}, the screen name of mu
 
 As shown in Figure \ref{fig:rt_compare_over_time}, the fluctuation of retweet frequency during the night is similar to that of plain tweets.  Some users may elect to write original text and this could cause retweet and plain messages to similarly fluctuate.  Both retweet and plain message frequencies peak at 06:30, which corresponds to the posting of the most-retweeted message, authored by iamdiddy.  It is likely that some users elect to write original text or decline to credit the original author.  As morning begins in the Americas, the frequency of plain tweets grows faster than that of retweets.  This may be attributed to several factors, such as users receiving additional information from traditional media outlets and simultaneously introducing the news to Twitter.  
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=120mm]{../figures/rt_compare_over_time}
-\caption{Frequency of retweets compared to plain tweets over time.}
-\label{fig:rt_compare_over_time}
-\end{figure}
-
 The most-retweeted message, by iamdiddy, peaks immediately after being published with over 250 users retweeting it in 15 minutes.  While many of the messages reach their apex shortly after posting, the popular Oxfam America message differs and doesn't peak until nearly 9 hours after it appeared.  The message was posted at 02:00 (9PM, EST) but mostly ignored until 10:50 (5:50AM, EST) when the band Coldplay resurrected it.
 
 \subsection{Network}
 
+\begin{figure}[h]
+\centering
+\subfloat[The core of the retweet network.]{\label{fig:rt_net_core}\includegraphics[width=60mm]{../figures/rt_net_core}}
+\quad
+\subfloat[Top 50 most-retweeted posts in the network.]{\label{fig:rt_net_top_50}\includegraphics[width=60mm]{../figures/rt_net_top_50_labels}}
+\caption{Network core and top 50 retweeted statuses.}
+\end{figure}
+
 Along with the dissemination of retweets, we considered a network of tweets related by which followers retweeted them.  This network, shown in Figure \ref{fig:rt_net_core}, uses shared audience as a relationship between retweeted messages.  The network consists of all retweeted messages as nodes and the existence of a common retweeter of any two messages as an edge.  For example, if a user retweets both iamdiddy's message and ashton kutcher's message, then those two messages are connected.  An edge weight is established By finding the total number of connections between two messages.  The constructed retweet network has a diameter of 10 and average clustering coefficient of 0.2715.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=120mm]{../figures/rt_net_core}
-\caption{The core of the retweet network.}
-\label{fig:rt_net_core}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[height=90mm]{../figures/rt_net_top_50_labels}
-\caption{Top 50 most-retweeted posts in the network.}
-\label{fig:rt_net_top_50}
-\end{figure}
 
 Viewing only the top 50 most-retweeted messages (Figure \ref{fig:rt_net_top_50}) we see that heaviest edges are between Wyclef Jean's messages.  The post by iamdiddy is strongly-connected to Wyclef's message, but also the White House's and American Red Cross' posts.  There are two messages that are interesting outliers, the posts from Louie Giglio, the organizer of a Christian conference series, and Idealist, a community site for non-profits, are both disconnected from all top-50 messages.
 
 \begin{figure}[h]
 \centering
-\label{fig:rt_net_core_clusters}
-\includegraphics[width=90mm]{../figures/rt_net_core_clusters}
-\caption{This is the network core, but with nodes filtered based on clustering coefficients.  By removing nodes with higher clustering coefficients we reveal the embedded tweet cliques.}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=90mm]{../figures/rt_net_travel}
-\caption{A cluster of tweets from authors in the travel industry.}
-\label{fig:rt_net_travel}
+\subfloat[This is the network core, but with nodes filtered based on clustering coefficients.  By removing nodes with higher clustering coefficients we reveal the embedded tweet cliques.]{\label{fig:rt_net_core_clusters}\includegraphics[width=60mm]{../figures/rt_net_core_clusters}}
+\quad
+\subfloat[A cluster of tweets from authors in the travel industry.]{\label{fig:rt_net_travel}\includegraphics[width=60mm]{../figures/rt_net_travel}}
+\caption{Finding cliques in thet retweet network.}
 \end{figure}
 
 In Figure \ref{fig:rt_net_travel}, a cluster of six messages is defined because a single user retweeted each of them.  This results in a clique of messages which suggests that the messages, or the original authors of the messages, have an external relationship.  In the case of this particular group, there are six, distinct authors and each is involved in the travel industry.  Rather than indicate a relationship between authors, some of the cliques found in the network group content.
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \centering
 \subfloat[Two Clusters (red outline)]{\includegraphics[width=60mm]{../figures/rt_net_photo_cropped_annotated}}
 \quad
@@ -172,8 +164,6 @@ In Figure \ref{fig:rt_net_travel}, a cluster of six messages is defined because 
 \section{Hashtag Analysis}
 
 A hashtag is any word prefixed by the ``\#'' symbol; they are used to refer to anything, including broad topics (e.g. Haiti, earthquake, news), organizations (e.g. Oxfam, Red Cross, World Concern, CBM), or even emotional sentiments (e.g. tragedy, dead, donate). The 50 hashtags mentioned most in our corpus are shown in Figure~\ref{fig:hashtag_counts}.
-
-
 
 \begin{figure}[h]
 \centering
@@ -199,9 +189,6 @@ To find relationships between different hashtags we built the ``group network'',
 
 \subsection{Hashtag Ego Networks}
 During the time window during which our corpus was collected, there were many requests for aid both by, and on behalf of, international relief organizations. By isolating different hashtag ego networks we see some semantic clustering of terms. Figure~\ref{fig:ht_ego_graphs} shows the ego graph of the hashtags \textit{\#donate}, \textit{\#oxfam}, \textit{\#redcross}, and \textit{\#cbm}. 
-
-
-
 
 \begin{figure}[h]
 \centering
@@ -235,18 +222,5 @@ The old testament of network analysis, \cite{wasserman1994sna}, was used as a re
 
 \bibliographystyle{splncs}
 \bibliography{bibfile}
-
-\appendix
-\section{Centrality Reports}
-\subsection{Retweet Network}
-Network centrality statistics for the retweet network.
-
-\begin{description}
-  \item{Diameter} 10
-  \item{Average path length} 0.51636
-\end{description}
-
-\subsection{Hashtag Network}
-Network centrality statistics for the hashtag network.
 
 \end{document}
