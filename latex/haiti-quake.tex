@@ -30,7 +30,9 @@ When a user wishes to share a post made by a friend, they may retweet it.  A ret
 Twitter has previously been used to report and organize a response to emergency situations, such as the crash landing of a plane in the Hudson Bay in January 2009 \cite{Deards2009} and the Iranian 2009 election protest \cite{Grossman2009}.  The research presented in this paper was inspired by those responses, we were interested to better understand how Twitter was used during the aftermath of the Haiti earthquake.
 
 \subsection{Data Summary}
-Our analysis focuses on the use of Twitter in the wake of the 2010 earthquake in Haiti. The earthquake struck at 4:53PM local time on 12 January, centered 25km west of Port-au-Prince. We obtained all the tweets pertaining to ``Haiti'' and ``Earthquake'' during the interval, in local time, from 10:21PM, January 12th to 11:54AM, January 13th.  All times in the paper are in UTC unless otherwise noted.  Local time in Haiti is UTC-5, the same offset as EST in the United States.  
+Our analysis focuses on the use of Twitter in the wake of the 2010 earthquake in Haiti. The earthquake struck at 4:53PM local time on 12 January, centered 25km west of Port-au-Prince. We obtained all the tweets pertaining to ``Haiti'' and ``Earthquake'' during the interval, in local time, from 10:21PM, January 12th to 11:54AM, January 13th.  All times in the paper are in UTC unless otherwise noted.  Local time in Haiti is UTC-5, the same offset as EST in the United States.
+
+Our corpus contains 63,196 tweets from 44,430 unique users, with 15,685 retweets and 3,202 replies. The most common hashtag was \textit{\#haiti} with 8,729 occurrences, followed by \textit{\#earthquake} with 3,299, and \textit{\#helphaiti} with 410 occurrences. The dominance of the top two hashtags, shown in Figure~\ref{fig:hashtag_counts}, may be the result of sample bias present in the way this corpus was extracted from the "firehose". For example, if all tweets containing the words "haiti" and "quake" were included it would capture any with those hashtags as well. However, there are 2072 tweets containing neither "haiti" nor "quake" so it's unclear exactly what criteria were used when collecting the corpus.
 
 As visible in Figure \ref{fig:all_tweets_over_time}, Twitter activity drops over night and then surpasses all previous activity frequency in the morning.  There is a noticeable drop in tweet frequency at the end of Figure \ref{fig:all_tweets_over_time}, please note that the last two intervals may be incomplete due to how the data was collected from the Twitter streaming API.
 
@@ -46,6 +48,13 @@ As visible in Figure \ref{fig:all_tweets_over_time}, Twitter activity drops over
 \includegraphics[width=120mm]{../figures/all_tweets_by_users}
 \caption{All tweets over time..}
 \label{fig:all_tweets_by_users}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{../figures/hashtag_counts.pdf}
+\caption{Top 50 most common hashtags in our corpus.}
+\label{fig:hashtag_counts}
 \end{figure}
 
 \section{Retweets}
@@ -160,28 +169,63 @@ In Figure \ref{fig:rt_net_travel}, a cluster of six messages is defined because 
 \label{fig:rt_net_photos}
 \end{figure}
 
-\section{Groups}
+\section{Hashtag Analysis}
 
-To find relationships between different hashtags we built the ``group network'', in which each node represents a unique hashtag and each edge represents the fact that an author mentioned both hashtags (though not necessarily in the same tweet). The \textit{weight} of an edge represents the number of authors who mentioned the pair of tags connected by the edge. 
+A hashtag is any word prefixed by the ``\#'' symbol; they are used to refer to anything, including broad topics (e.g. Haiti, earthquake, news), organizations (e.g. Oxfam, Red Cross, World Concern, CBM), or even emotional sentiments (e.g. tragedy, dead, donate). The 50 hashtags mentioned most in our corpus are shown in Figure~\ref{fig:hashtag_counts}.
 
-For example, \textit{\#earthquake} was mentioned 3,299 times by 2,329 different authors; \textit{\#haiti} was mentioned 8,729 times by 6,597 different authors; and 1,994 different authors mentioned both tags. Thus, the edge $\textit{\#earthquake}~\leftrightarrow~\textit{\#haiti}$ has weight of 1,994.
-
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{../figures/hashtag_counts.pdf}
-\caption{Top 50 most common hashtags in our corpus.}
-\label{fig:hashtag_counts}
-\end{figure}
 
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{../figures/top-20-hashtags.pdf}
 \caption{Top 20 hashtags over time. Note that the vertical axes vary in scale.}
-\label{fig:hashtag_counts}
+\label{fig:hashtag_counts_over_time}
 \end{figure}
 \section{Conclusion}
+
+Figure~\ref{fig:hashtag_counts_over_time} shows how different hashtags vary in frequency over time, revealing a number of interesting phenomena. The most-used hashtags, haiti and earthquake, vary with the typical daily ebb and flow of twitter activity, with a significant lull  between 3:00am and 6:00am EST. Some hashtags, such as \textit{\#haitian} and \textit{\#oxfam} see sharp spikes in use followed by an exponential decay. The resurgence of \textit{\#oxfam} corresponds to the retweet by Coldplay mentioned above.
+
+The hashtag \textit{\#haitiquake} is interesting in that it declines steadily over time. This is apparently one tag which didn't catch on.
+
+\subsection{Group Network}
+
+To find relationships between different hashtags we built the ``group network'', in which each node represents a unique hashtag and each edge represents the fact that an author mentioned both hashtags (though not necessarily in the same tweet). The \textit{weight} of an edge represents the number of authors who mentioned the pair of tags connected by the edge. For example, \textit{\#earthquake} was mentioned 3,299 times by 2,329 different authors; \textit{\#haiti} was mentioned 8,729 times by 6,597 different authors; and 1,994 different authors mentioned both tags. Thus, the edge $\textit{\#earthquake}~\leftrightarrow~\textit{\#haiti}$ has weight of 1,994. The degree distribution is long tailed with many hashtags sharing a single link or pair of links, and very few hashtags containing a large number of shared links. Figure~\ref{fig:ht_group_network} shows the group network, filtered to remove edges with a weight of less than 3, then nodes with a degree of less than 3. Filtering based on these parameters is highly effective at isolating and eliminating self-promotional spam cliques.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{../figures/ht_group_network}
+\caption{Hashtag group network, filtered to remove edges with a weight of less than 3, then nodes with a degree of less than 3. }
+\label{fig:ht_group_network}
+\end{figure}
+
+\subsection{Hashtag Ego Networks}
+During the time window during which our corpus was collected, there were many requests for aid both by, and on behalf of, international relief organizations. By isolating different hashtag ego networks we see some semantic clustering of terms. Figure~\ref{fig:ht_ego_graphs} shows the ego graph of the hashtags \textit{\#donate}, \textit{\#oxfam}, \textit{\#redcross}, and \textit{\#cbm}. 
+
+
+
+
+\begin{figure}[h]
+\centering
+\subfloat[\textit{\#donate} ego network]{\includegraphics[width=60mm]{../figures/ego_donate}}
+\quad
+\subfloat[\textit{\#oxfam} ego network]{\includegraphics[width=60mm]{../figures/ego_oxfam}}
+\quad
+\subfloat[\textit{\#redcross} ego network]{\includegraphics[width=60mm]{../figures/ego_redcross}}
+\quad
+\subfloat[\textit{\#cbm} ego network]{\includegraphics[width=60mm]{../figures/ego_cbm}}
+\quad
+\caption{Ego networks for some charity-related hashtags. There are more popular hash}
+\label{fig:ht_ego_graphs}
+\end{figure}
+
+
+
+%Sentiments:
+%tragedy
+%donate
+%dead
+
+
 
 Though our corpus only provided us with data covering a 13-hour time span, it was enough to offer a glimpse at how Twitter users respond to breaking news and emergencies.  Some findings are expected given certain assumptions.  For example, if we assume that the majority of active Twitter users are in the United States, the drop in posting frequency which corresponds to nighttime in the Americas is expected.  The formation of meaningful cliques in the retweet network is the most unexpected result.  Cliques of messages, such as those posted by individuals in the travel industry or the images captured by the photographer, group related material
 
