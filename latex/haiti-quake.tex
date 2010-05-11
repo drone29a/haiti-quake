@@ -21,16 +21,16 @@
 \tableofcontents
 
 \section{Introduction}
-Twitter is a large, social-network platform with a simple premise.  Every user may post short messages and read messages posted by other users.  Significant functionality has been built atop Twitter, people share links, photos, videos; participate in conversations, share the geographic coordinates of their current location, and join ad-hoc groups.  Users link themselves with each other by choosing to follow the status updates made by another user.  The follow relationship does not require reciprocity, users Alice and Bob may both follow Carol, but Carol may choose to not follow either of them in return.  In twitter terms, Alice and Bob both consider Carol a friend, but Carol does not.  To Carol, Alice and Bob are only followers.
+Twitter is a large, social-network platform with a simple premise.  Every user may post short messages and read messages posted by others.  Significant functionality has been built atop Twitter, people share links, photos, videos; participate in conversations, share the geographic coordinates of their current location, and join ad-hoc groups.  Users link themselves with each other by choosing to follow the status updates made by another user.  The follow relationship does not require reciprocity, users Alice and Bob may both follow Carol, but Carol may choose to not follow either of them in return.  In Twitter terminology, Alice and Bob both consider Carol a friend, but Carol does not.  To Carol, Alice and Bob are only followers.
 
-Although the original purpose of posting was to publish current status: Alice posts, ``I'm writing a paper about Twitter. Getting hungry.''  Users began to post replies, ``@Alice Take a break if you're hungry, want to grab sushi?''  Messages on Twitter are limited to 140 characters, an artifact of Twitter's original focused support of SMS on mobile phones \cite{Sagolla2009}. The forced brevity inspired compact idioms for denoting metadata.  The ``@''-symbol prefixed to a username is known as a mention.  Mentions signal the user that the message involves them.  Another idiom is the hashtag, a ``\#''-symbol prefixed to a string of characters.  Hashtags mark the message as being related to a particular topic or object, as in ``The humanitarian effort in response of \#haitiquake is ongoing.''
+Although the original purpose of posting was to share current status: Alice posts, ``I'm writing a paper about Twitter. Getting hungry.''  Users began to post replies: ``@Alice Take a break if you're hungry, want to grab sushi?''  Messages on Twitter are limited to 140 characters, an artifact of Twitter's original focused support of SMS on mobile phones \cite{Sagolla2009}. The forced brevity inspired compact idioms for denoting metadata.  The ``@''-symbol prefixed to a username is known as a mention.  Mentions signal a user that a message involves them.  Another idiom is the hashtag, a ``\#''-symbol prefixed to a string of characters.  Hashtags mark the message as being related to a particular topic or object, as in ``The humanitarian effort in response of \#haitiquake is ongoing.''
 
-When a user wishes to share a post made by a friend, they may retweet it.  A retweet message includes the text body of the post being be retweeted, prefixed with a string that indicates the post is a retweet.  A post,``RT @Alice A Taste of Burma is delicious!'', the ``RT'' marks the post as a retweet and the immediately following mention of Alice indicates that she is the author of the original post.  Retweeting is commonly used to share interesting posts from friends with one's own followers.  If we imagine the retweeter as a boundary spanner, then they are diffusing information from their friends to their followers.
+When a user wishes to share a post made by a friend, they may retweet it.  A retweet message includes the text body of the post being retweeted, prefixed with a string that indicates the post is a retweet.  In a post,``RT @Alice A Taste of Burma is delicious!'', the ``RT'' marks the post as a retweet and the immediately following mention of Alice indicates that she is the author of the original post.  Retweeting is commonly used to share interesting statuses from friends with one's own followers; retweeters spread information from their friends to their followers.  In this paper, we use the term \textit{plain tweet} to refer to tweets that are not retweets.
 
-Twitter has previously been used to report and organize a response to emergency situations, such as the crash landing of a plane in the Hudson Bay in January 2009 \cite{Deards2009} and the Iranian 2009 election protest \cite{Grossman2009}.  The research presented in this paper was inspired by those responses, we were interested to see how Twitter was used during the aftermath of the Haiti earthquake.
+Twitter has previously been used to report and organize a response to emergency situations, such as the crash landing of a plane in the Hudson Bay in January 2009 \cite{Deards2009} and the Iranian 2009 election protest \cite{Grossman2009}.  The research presented in this paper was inspired by those responses, we were interested to better understand how Twitter was used during the aftermath of the Haiti earthquake.
 
-\section{Data Summary}
-Our analysis focuses on the use of Twitter in the wake of the 2010 earthquake in Haiti. The earthquake struck at 4:53PM local time on 12 January, centered 25km west of Port-au-Prince. We obtained all the tweets pertaining to ``Haiti'' and ``Earthquake'' during the interval, in local time, from 10:21PM, January 12th to 11:54AM, January 13th.  All times in the paper are in UTC unless otherwise noted.  Local time in Haiti is UTC-5, the same as EST in the United States.  As visible in Figure \ref{fig:all_tweets_over_time}, Twitter activity drops over night and then surpasses all previous activity frequency in the morning.
+\subsection{Data Summary}
+Our analysis focuses on the use of Twitter in the wake of the 2010 earthquake in Haiti. The earthquake struck at 4:53PM local time on 12 January, centered 25km west of Port-au-Prince. We obtained all the tweets pertaining to ``Haiti'' and ``Earthquake'' during the interval, in local time, from 10:21PM, January 12th to 11:54AM, January 13th.  All times in the paper are in UTC unless otherwise noted.  Local time in Haiti is UTC-5, the same offset as EST in the United States.  As visible in Figure \ref{fig:all_tweets_over_time}, Twitter activity drops over night and then surpasses all previous activity frequency in the morning.  There is a noticeable drop in tweet frequency at the end of Figure \ref{fig:all_tweets_over_time}, please note that the last two intervals may be incomplete due to how the data was collected from the Twitter streaming API.
 
 \begin{figure}[h]
 \centering
@@ -48,16 +48,9 @@ Our analysis focuses on the use of Twitter in the wake of the 2010 earthquake in
 
 \section{Retweets}
 
-We consider both the information diffusion and network relationships that may be inferred from analysis of the retweets in the dataset.  The percentage of posts that are retweets remains fairly stable, as the fluctuation of retweets follows that of the plain tweets.  Some users may elect to write original text and this could cause retweet and plain messages to similarly fluctuate.  The mutual peak at 06:30 supports this as the most-retweeted message is peaking but the number of plain messages also increases.  Towards the end of the dataset we see the rate of new plain posts outpaces retweets.  This may be attributed to several factors, such as many users receiving additional information from traditional media outlets and simultaneously introducing the news to Twitter.
+We consider both the information diffusion and network relationships that may be inferred from analysis of the retweets in the dataset.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=120mm]{../figures/rt_compare_over_time}
-\caption{Frequency of retweets compared to plain tweets over time.}
-\label{fig:rt_compare_over_time}
-\end{figure}
-
-As shown in Figure~\ref{fig:rt_top_50}, \textit{iamdiddy}, the screen name of music artist Sean ``Diddy'' Combs was the author of the single most retweeted post.  There are 36 unique authors whose posts made it into the top 50; Wyclef Jean, CNN Breaking News, and LIFE.com had several posts.  Wyclef Jean, a musician born in Haiti and nephew of the Haitian ambassador to the United States, had 11 posts in the top 50 with 5 of them in the top 10.  The Y\'{e}le Haiti Foundation, which Wyclef founded in 2005 to provide educational scholarships to Haitians, also had a top-50 retweet.  The top-50 list is unsurprisingly dominated by celebrities and popular media outlets.
+As shown in Figure~\ref{fig:rt_top_50}, \textit{iamdiddy}, the screen name of music artist Sean ``Diddy'' Combs was the author of the single most retweeted post.  There are 36 unique authors whose posts made it into the top 50; Wyclef Jean, CNN Breaking News, and LIFE.com had several posts each.  Wyclef Jean, a musician born in Haiti and nephew of the Haitian ambassador to the United States, had 11 posts in the top 50 with 5 of them in the top 10.  The Y\'{e}le Haiti Foundation, which Wyclef founded in 2005 to provide educational scholarships to Haitians, also had a top-50 retweet.  The top-50 list is unsurprisingly dominated by celebrities and popular media outlets.
 
 \begin{figure}[h]
 \centering
@@ -105,11 +98,18 @@ As shown in Figure~\ref{fig:rt_top_50}, \textit{iamdiddy}, the screen name of mu
   \end{table}
 \end{center}
 
-The most-retweeted message, by iamdiddy, peaks immediately after being published with over 250 users retweeting it in 15 minutes.  While many of the messages reach their apex shortly after posting, the popular Oxfam America message doesn't peak until nearly 9 hours after it appeared.  The message was posted at 02:00 (9PM, EST) but mostly ignored until 10:50 (5:50AM, EST) when the band Coldplay resurrected it.
+As shown in Figure \ref{fig:rt_compare_over_time}, the fluctuation of retweet frequency during the night is similar to that of plain tweets.  Some users may elect to write original text and this could cause retweet and plain messages to similarly fluctuate.  Both retweet and plain message frequencies peak at 06:30, which corresponds to the posting of the most-retweeted message, authored by iamdiddy.  It is likely that some users elect to write original text or decline to credit the original author.  As morning begins in the Americas, the frequency of plain tweets grows faster than that of retweets.  This may be attributed to several factors, such as users receiving additional information from traditional media outlets and simultaneously introducing the news to Twitter.  
 
-Along with the dissemination of retweets, we considered a network of tweets related by which followers retweeted them.  This network, shown in \ref{fig:rt_net_core}, consists of all retweeted messages as nodes and the existence of a common retweeter of any two messages as an edge.  For example, if a user retweets both a iamdiddy's message and ashton kutcher's message, then those two messages are connected.  By summing the number of connections between two messages we establish an edge weight.
+\begin{figure}[h]
+\centering
+\includegraphics[width=120mm]{../figures/rt_compare_over_time}
+\caption{Frequency of retweets compared to plain tweets over time.}
+\label{fig:rt_compare_over_time}
+\end{figure}
 
-The RT network has a diameter of 10 and average clustering coefficient of 0.2715.
+The most-retweeted message, by iamdiddy, peaks immediately after being published with over 250 users retweeting it in 15 minutes.  While many of the messages reach their apex shortly after posting, the popular Oxfam America message differs and doesn't peak until nearly 9 hours after it appeared.  The message was posted at 02:00 (9PM, EST) but mostly ignored until 10:50 (5:50AM, EST) when the band Coldplay resurrected it.
+
+Along with the dissemination of retweets, we considered a network of tweets related by which followers retweeted them.  This network, shown in Figure \ref{fig:rt_net_core}, uses shared audience as a relationship between retweeted messages.  The network consists of all retweeted messages as nodes and the existence of a common retweeter of any two messages as an edge.  For example, if a user retweets both iamdiddy's message and ashton kutcher's message, then those two messages are connected.  An edge weight is established By finding the total number of connections between two messages.  The constructed retweet network has a diameter of 10 and average clustering coefficient of 0.2715.
 
 \begin{figure}[h]
 \centering
@@ -125,30 +125,30 @@ The RT network has a diameter of 10 and average clustering coefficient of 0.2715
 \label{fig:rt_net_top_50}
 \end{figure}
 
-Viewing only the top 50 most-retweeted messages we see that heaviest edges are between Wyclef Jean's messages.  The post by iamdiddy is strongly-connected to Wyclef's message, but also the White House's and American Red Cross' posts.  There are two messages that are interesting outliers, the posts from Louie Giglio, the organizer of a Christian conference series, and Idealist, a community site for non-profits, are both disconnected from all top-50 messages.
+Viewing only the top 50 most-retweeted messages (Figure \ref{fig:rt_net_top_50_labels}) we see that heaviest edges are between Wyclef Jean's messages.  The post by iamdiddy is strongly-connected to Wyclef's message, but also the White House's and American Red Cross' posts.  There are two messages that are interesting outliers, the posts from Louie Giglio, the organizer of a Christian conference series, and Idealist, a community site for non-profits, are both disconnected from all top-50 messages.
 
 \begin{figure}[h]
 \centering
 \label{fig:rt_net_core_clusters}
-\includegraphics[width=120mm]{../figures/rt_net_core_clusters}
+\includegraphics[width=90mm]{../figures/rt_net_core_clusters}
 \caption{This is the network core, but with nodes filtered based on clustering coefficients.  By removing nodes with higher clustering coefficients we reveal the embedded tweet communities.}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=120mm]{../figures/rt_net_travel}
+\includegraphics[width=90mm]{../figures/rt_net_travel}
 \caption{A cluster of tweets from authors in the travel industry.}
 \label{fig:rt_net_travel}
 \end{figure}
 
-In Figure \ref{fig:rt_net_travel}, a cluster of six messages is defined because a single user retweeted each of them.  This results in a fully-connected component of messages which suggests that the messages, or the original authors of the messages, have an external relationship.  In the case of this particular group, there are six, distinct authors and each is involved in the travel industry.  Rather than indicate a relationship between authors, some of the fully-connected components found in the network group content.
+In Figure \ref{fig:rt_net_travel}, a cluster of six messages is defined because a single user retweeted each of them.  This results in a clique of messages which suggests that the messages, or the original authors of the messages, have an external relationship.  In the case of this particular group, there are six, distinct authors and each is involved in the travel industry.  Rather than indicate a relationship between authors, some of the cliques found in the network group content.
 
 \begin{figure}[h]
 \centering
-\subfloat[Two Clusters]{\includegraphics[width=60mm]{../figures/rt_net_photo_cropped_annotated}}
+\subfloat[Two Clusters (red outline)]{\includegraphics[width=60mm]{../figures/rt_net_photo_cropped_annotated}}
 \quad
-\subfloat[Boundary Spanner]{\includegraphics[width=60mm]{../figures/rt_net_photo_popular}}
-\caption{Clusters of tweets representing sets of photos.}
+\subfloat[Boundary Spanner (red outline) and Two Clusters (blue outline)]{\includegraphics[width=60mm]{../figures/rt_net_photo_popular_annotated}}
+\caption{Clusters of tweets representing sets of photos.  The }
 \label{fig:rt_net_photos}
 \end{figure}
 
